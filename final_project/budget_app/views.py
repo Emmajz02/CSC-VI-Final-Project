@@ -10,7 +10,7 @@ def register_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Account created successfully! You can now log in.")
-            return redirect('login')  # name should match your URL pattern
+            return redirect('login') 
     else:
         form = RegisterForm()
 
@@ -24,7 +24,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')  # name should match your home page URL pattern
+            return redirect('home')
         else:
             messages.error(request, 'Invalid username or password')
 
@@ -35,6 +35,11 @@ def logout_view(request):
     return redirect('login')
 
 
-@login_required
 def home_view(request):
-    return render(request, 'budget_app/templates/budget_app/home.html')
+    return render(request, 'budget_app/home.html')
+
+
+#for later
+#@login_required
+#def home_view(request):
+    #return render(request, 'budget_app/templates/budget_app/home.html')

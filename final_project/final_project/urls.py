@@ -20,5 +20,5 @@ from budget_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('budget_app.urls')),
+    path('budget_app/', include('budget_app.urls')),
 ]
