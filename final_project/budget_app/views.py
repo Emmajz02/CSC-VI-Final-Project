@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import RegisterForm, BudgetForm
+from .forms import RegisterForm, BudgetForm, ExpenseForm
 from django.contrib.auth.decorators import login_required
-from .models import Budget
+from .models import Budget, Expense
 
 
 def register_view(request):
@@ -38,21 +38,50 @@ def logout_view(request):
 
 
 @login_required(login_url='login')  # Redirect users to login if they are not authenticated
-def home_view(request):
+def budget_view(request):
     budget, created = Budget.objects.get_or_create(user=request.user, defaults={'amount': 0.00})
+    form = BudgetForm(instance=budget)
+    expense_form = ExpenseForm()
 
     if request.method == 'POST':
-        form = BudgetForm(request.POST, instance=budget)
-        if form.is_valid():
-            form.save()
+        if 'update_budget' in request.POST:
+            form = BudgetForm(request.POST, instance=budget)
+            if form.is_valid():
+                form.save()
             return redirect('home')
+
+        elif 'add_expense' in request.POST:
+            expense_form = ExpenseForm(request.POST)
+            if expense_form.is_valid():
+                expense = expense_form.save(commit=False)
+                expense.budget = budget
+                expense.save()
+                
+                # Update the budget amount after adding an expense
+                budget.amount -= expense.amount
+                budget.save()
+            return redirect('home')
+
     else:
         form = BudgetForm(instance=budget)
+        expense_form = ExpenseForm()
 
-    return render(request, 'budget_app/home.html', {'form': form, 'budget': budget})
+    expenses = Expense.objects.filter(budget=budget)
+    return render(request, 'budget_app/home.html', {
+        'expense_form': expense_form,
+        'expenses': expenses,
+        'form': form,
+        'budget': budget
+    })
 
 
-#for later
-#@login_required
-#def home_view(request):
-    #return render(request, 'budget_app/templates/budget_app/home.html')
+    
+
+@login_required
+def delete_expense(request, expense_id):
+    expense = get_object_or_404(Expense, id=expense_id)
+    budget = expense.budget
+    expense.delete()
+    budget.amount += expense.amount
+    budget.save()
+    return redirect('home')

@@ -8,3 +8,11 @@ class Budget(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Budget: ${self.amount} ({self.period})"
+    
+class Expense(models.Model):
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, related_name="expenses")
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    category = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.category}: -${self.amount}"

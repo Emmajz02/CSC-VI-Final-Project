@@ -11,11 +11,26 @@
     <h3>Your Budget</h3>
     <p>Current Budget: <strong>${{ budget.amount }}</strong> ({{ budget.period }})</p>
 
-    <form method="post">
+    <form method="POST" action="{% url 'home' %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Update Budget</button>
+    <button type="submit" name="update_budget">Update Budget</button>
     </form>
+
+    <form method="POST" action="{% url 'home' %}">
+    {% csrf_token %}
+    {{ expense_form.as_p }}
+    <button type="submit" name="add_expense">Add Expense</button>
+    </form>
+
+    <ul>
+        {% for expense in expenses %}
+            <li>
+                {{ expense.category }} - ${{ expense.amount }} 
+                <a href="{% url 'delete_expense' expense.id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
 
     <a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>
 </body>
