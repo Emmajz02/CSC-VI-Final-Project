@@ -1,11 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Budget App - Home</title>
+<link rel="stylesheet" href="{% static 'budget_app/css/budget.css' %}">
+<title>Budget App - Home</title>
 </head>
-<body>
-    <h1>Welcome to the Budget App!</h1>
-    
+<body class="background">
+    <div1 class="header">
+    <div2 class="button-pos">
+    <a href="{% url 'login' %}" class="button1">Login</a> | <a href="{% url 'register' %}" class="button2">Register</a>
+    </div2>
+    <h1>Welcome to PiggyBank!</h1>
+    </div1>
     <h2>Welcome, {{ user.username }}!</h2>
 
     <h3>Your Budget</h3>
@@ -32,6 +38,6 @@
         {% endfor %}
     </ul>
 
-    <a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>
+    
 </body>
 </html>

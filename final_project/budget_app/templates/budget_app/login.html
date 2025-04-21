@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{% static 'budget_app/css/budget.css' %}">
     <title>Login</title>
 </head>
-<body>
+<body class="background">
     <h2>Login</h2>
     <form method="POST">
         {% csrf_token %}
