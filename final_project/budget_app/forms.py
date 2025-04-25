@@ -19,3 +19,8 @@ class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
         fields = ['amount', 'category']
+
+class ProfilePictureForm(forms.ModelForm):
+    class Meta:
+        model = Budget
+        fields = ['profile_picture_url']
