@@ -3,40 +3,105 @@
 <html lang="en">
 <head>
 <link rel="stylesheet" href="{% static 'budget_app/css/budget.css' %}">
-<title>Budget App - Home</title>
+<title>PiggyBank - Home</title>
 </head>
 <body class="background">
-    <div1 class="header">
-    <div2 class="button-pos">
-    <a href="{% url 'login' %}" class="button1">Login</a> | <a href="{% url 'register' %}" class="button2">Register</a>
-    </div2>
-    <h1>Welcome to PiggyBank!</h1>
-    </div1>
-    <h2>Welcome, {{ user.username }}!</h2>
+    <div class="header">
+        <div class="button-pos">
+        <a href="{% url 'login' %}" class="button1">Login</a> | <a href="{% url 'register' %}" class="button2">Register</a>
+        </div>
+        <h1 style="text-align: center; width: 100%;">Welcome to PiggyBank, {{ user.username }}!</h1>
+    </div>
 
-    <h3>Your Budget</h3>
-    <p>Current Budget: <strong>${{ budget.amount }}</strong> ({{ budget.period }})</p>
+    <div class="pos">
+        <h3>Your Budget</h3>
+        <p>Current Budget: <strong>${{ budget.amount }}</strong> ({{ budget.period }})</p>
 
-    <form method="POST" action="{% url 'home' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" name="update_budget">Update Budget</button>
-    </form>
+        <form method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="update_budget" class="button1">Update Budget</button>
+        </form>
 
-    <form method="POST" action="{% url 'home' %}">
-    {% csrf_token %}
-    {{ expense_form.as_p }}
-    <button type="submit" name="add_expense">Add Expense</button>
-    </form>
+        <form method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        {{ expense_form.as_p }}
+        <button type="submit" name="add_expense" class="button2">Add Expense</button>
+        </form>
 
-    <ul>
-        {% for expense in expenses %}
-            <li>
-                {{ expense.category }} - ${{ expense.amount }} 
-                <a href="{% url 'delete_expense' expense.id %}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+        <ul>
+            {% for expense in expenses %}
+                <li>
+                    {{ expense.category }} - ${{ expense.amount }} 
+                    <a href="{% url 'delete_expense' expense.id %}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <button onclick="toggleCalculator()" style="background-color: #fc5353; color: white; padding: 8px 12px; font-weight: bold;">Calculator</button>
+        <div id="calculator" class="calculator" style="display: none">
+        <input type="text" id="calc-display" readonly style="width: 160px; font-size: 18px; margin-bottom: 5px;" />
+        <br>
+        <div>
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('+')">+</button>
+        </div>
+        <div>
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="press('-')">-</button>
+        </div>
+        <div>
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="press('*')">*</button>
+        </div>
+        <div>
+            <button onclick="press('0')">0</button>
+            <button onclick="press('.')">.</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="press('/')">/</button>
+        </div>
+        <button onclick="clearDisplay()" style="margin-top: 5px;">Clear</button>
+        </div>
+
+        <script>
+            let calcVisible = false;
+            
+            function toggleCalculator() {
+              const calc = document.getElementById('calculator');
+              calcVisible = !calcVisible;
+              calc.style.display = calcVisible ? 'block' : 'none';
+              if (!calcVisible) {
+                clearDisplay();
+              }
+            }
+            
+            function press(value) {
+              document.getElementById('calc-display').value += value;
+            }
+            
+            function calculate() {
+              try {
+                const result = eval(document.getElementById('calc-display').value);
+                document.getElementById('calc-display').value = result;
+              } catch {
+                document.getElementById('calc-display').value = 'Error';
+              }
+            }
+            
+            function clearDisplay() {
+              document.getElementById('calc-display').value = '';
+            }
+            </script>
+    </div>
+
 
     
 </body>
