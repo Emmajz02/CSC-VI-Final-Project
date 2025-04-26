@@ -32,20 +32,27 @@
 
 .header{
     width: 100%;
-    height: 100%;
     padding: 10px;
     border-bottom: 10px solid #f83b83;
     background-color: #f59cbe;
+}
+
+.bar {
     justify-content: space-between;
     display: flex;
-    place-items: center;
-    flex-wrap: wrap;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.welcome {
+    position: relative;
+    right: 350px;
 }
 
 .button-pos {
     position: relative;
-    top: 0;
-    margin-left: auto;
+	top: 0;
+	left: 950px;
     display: flex;
     gap: 10px;
 }
@@ -93,4 +100,13 @@
     box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
 }
 
+.prof {
+    position: relative;
+    top: 0;
+    margin-right: auto;
+}
+
+.pic {
+    padding-top: 20px;
+}
 

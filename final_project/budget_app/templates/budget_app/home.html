@@ -7,21 +7,24 @@
 </head>
 <body class="background">
     <div class="header">
-        <div class="button-pos">
-        <a href="{% url 'login' %}" class="button1">Login</a> | <a href="{% url 'register' %}" class="button2">Register</a>
+
+      <div class="bar">
+        <div class="prof">
+          <div class="button-pos">
+            <a href="{% url 'login' %}" class="button1">Login</a>
+            <a href="{% url 'register' %}" class="button2">Register</a>
+          </div>
+          <form method="POST">
+            {% csrf_token %}
+            {{ profile_form.as_p }}
+            <button type="submit" name="update_profile_pic" class="calc-button">Update Profile Picture</button>
+          </form>
+          {% if budget.profile_picture_url %}
+              <img src="{{ budget.profile_picture_url }}" alt="Profile Picture" width="100" class="pic">
+          {% endif %}
         </div>
-
-        <form method="POST">
-          {% csrf_token %}
-          {{ profile_form.as_p }}
-          <button type="submit" name="update_profile_pic">Update Profile Picture</button>
-        </form>
-      
-      {% if budget.profile_picture_url %}
-          <img src="{{ budget.profile_picture_url }}" alt="Profile Picture" width="100">
-      {% endif %}
-
-        <h1 style="text-align: center; width: 100%;">Welcome to PiggyBank, {{ user.username }}!</h1>
+        <h1 class="welcome">Welcome to PiggyBank, {{ user.username }}!</h1>
+      </div>
     </div>
 
     <div class="pos">
